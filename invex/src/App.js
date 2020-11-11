@@ -1,4 +1,5 @@
-import Login from "./pages/Login/Login";
+import Login from "./pages/Login";
+import Dashboard from "./pages/Dashboard";
 import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 
@@ -42,7 +43,7 @@ const theme = createMuiTheme({
 function App() {
   return (
     <ThemeProvider theme={theme}>
-      <Login />
+      <Dashboard />
     </ThemeProvider>
   );
 }
