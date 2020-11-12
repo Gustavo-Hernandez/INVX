@@ -1,8 +1,10 @@
 import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import { BrowserRouter } from "react-router-dom";
+import useAuthentication from "./hooks/useAuthentication";
 import AuthNavigator from "./navigation/AuthNavigator";
 import DashboardNavigator from "./navigation/DashboardNavigator";
+import VerificationNavigator from "./navigation/VerificationNavigator";
 
 const theme = createMuiTheme({
   palette: {
@@ -41,21 +43,22 @@ const theme = createMuiTheme({
   },
 });
 
-const isValidated = true;
-
-const setNavigator = () =>{
-  if (isValidated) {
-    return <DashboardNavigator/> 
-  }
-  return <AuthNavigator/>
-}
-
 function App() {
+  const [isAuthenticated, isVerified] = useAuthentication();
+
+  const setNavigator = () => {
+    if (isAuthenticated) {
+      if (isVerified) {
+        return <DashboardNavigator />;
+      }
+      return <VerificationNavigator />;
+    }
+    return <AuthNavigator />;
+  };
+  const routes = setNavigator();
   return (
     <BrowserRouter>
-      <ThemeProvider theme={theme}>
-        {setNavigator()}
-      </ThemeProvider>
+      <ThemeProvider theme={theme}>{routes}</ThemeProvider>
     </BrowserRouter>
   );
 }
