@@ -1,7 +1,8 @@
-import Login from "./pages/Login";
-import Dashboard from "./pages/Dashboard";
 import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
+import { BrowserRouter } from "react-router-dom";
+import AuthNavigator from "./navigation/AuthNavigator";
+import DashboardNavigator from "./navigation/DashboardNavigator";
 
 const theme = createMuiTheme({
   palette: {
@@ -40,11 +41,22 @@ const theme = createMuiTheme({
   },
 });
 
+const isValidated = true;
+
+const setNavigator = () =>{
+  if (isValidated) {
+    return <DashboardNavigator/> 
+  }
+  return <AuthNavigator/>
+}
+
 function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <Dashboard />
-    </ThemeProvider>
+    <BrowserRouter>
+      <ThemeProvider theme={theme}>
+        {setNavigator()}
+      </ThemeProvider>
+    </BrowserRouter>
   );
 }
 
