@@ -108,7 +108,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Dashboard = () => {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
   const {signout} = useContext(AuthContext);
   
   const handleDrawerOpen = () => {

@@ -15,7 +15,7 @@ const authReducer = (state, action) => {
     case "confirm_email_sent":
       return { ...state, confirmationMessage: action.payload, error: "" };
     case "set_local_email":
-      return { ...state, error: "", email: action.payload};
+      return { ...state, error: "", email: action.payload };
     default:
       return state;
   }
@@ -24,7 +24,7 @@ const authReducer = (state, action) => {
 const signin = (dispatch) => async ({ email, password, history }) => {
   if (email && password) {
     try {
-      let {user} = await auth.signInWithEmailAndPassword(email, password);
+      let { user } = await auth.signInWithEmailAndPassword(email, password);
       history.push("/dashboard");
       dispatch({ type: "set_local_email", payload: user.email });
     } catch (error) {
@@ -102,12 +102,7 @@ const signup = (dispatch) => async ({
     }
 
     const errorComponent = tempError.split("\n").map((e, index) => (
-      <Typography
-        key={index}
-        component="p"
-        color="error"
-        variant="body2"
-      >
+      <Typography key={index} component="p" color="error" variant="body2">
         {e}
       </Typography>
     ));
@@ -183,12 +178,56 @@ const sendConfirmationEmail = (dispatch) => async () => {
   }
 };
 
+const sendRecoveryEmail = (dispatch) => async ({ email }) => {
+  if (email && email.length > 0) {
+    if (emailRegEx.test(email)) {
+      try {
+        await auth.sendPasswordResetEmail(email);
+        dispatch({ type: "confirm_email_sent", payload: "Email has been sent." });
+      } catch (error) {
+        let errorMessage = "";
+        switch (error.code) {
+          case "auth/invalid-email":
+            errorMessage = "This email is not valid.";
+            break;
+          case "auth/user-not-found":
+            errorMessage = "This email is not registered.";
+            break;
+          default:
+            errorMessage = "Email could not be sent.";
+            break;
+        }
+        const errorComponent = (
+          <Typography component="p" color="error" variant="body2">
+            {errorMessage}
+          </Typography>
+        );
+        dispatch({ type: "set_error", payload: errorComponent });
+      }
+    } else {
+      const errorComponent = (
+        <Typography component="p" color="error" variant="body2">
+          Invalid email.
+        </Typography>
+      );
+      dispatch({ type: "set_error", payload: errorComponent });
+    }
+  } else {
+    const errorComponent = (
+      <Typography component="p" color="error" variant="body2">
+        Missing email.
+      </Typography>
+    );
+    dispatch({ type: "set_error", payload: errorComponent });
+  }
+};
+
 const signout = (dispatch) => async () => {
   auth.signOut();
 };
 
 export const { Provider, Context } = createDataContext(
   authReducer,
-  { signout, signup, signin, sendConfirmationEmail },
-  { error: "", confirmationMessage: "", email:"" }
+  { signout, signup, signin, sendConfirmationEmail, sendRecoveryEmail },
+  { error: "", confirmationMessage: "", email: "" }
 );
