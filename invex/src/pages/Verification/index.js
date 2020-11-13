@@ -6,7 +6,8 @@ import {
   Button,
 } from "@material-ui/core";
 import MailOutlineIcon from "@material-ui/icons/MailOutline";
-import React from "react";
+import React, { useContext } from "react";
+import { Context as AuthContext } from "../../context/AuthContext";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,11 +31,20 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: "800",
     color: theme.palette.secondary.main,
   },
+  confirmationContainer: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+  },
 }));
 
-const Verification = () => {
+const Verification = ({ history }) => {
   const classes = useStyles();
-  const email = "user@test.com";
+  const {
+    signout,
+    sendConfirmationEmail,
+    state: { email, confirmationMessage },
+  } = useContext(AuthContext);
   return (
     <Grid container className={classes.root} justify="center">
       <Grid container item xs={12} sm={8} md={6} justify="center">
@@ -82,8 +92,56 @@ const Verification = () => {
           >
             Still can't find the email?
           </Typography>
-          <Button variant="contained" color="primary" disableElevation>
-            Resend email
+          {confirmationMessage.length > 0 ? (
+            <div className={classes.confirmationContainer}>
+              <Typography
+                component="p"
+                variant="subtitle2"
+                align="center"
+                style={{
+                  marginTop: "0.5rem",
+                  marginBottom: "0.5rem",
+                  color: "#28a745",
+                }}
+                gutterBottom
+              >
+                {confirmationMessage}
+              </Typography>
+              <Button
+                variant="contained"
+                color="primary"
+                disableElevation
+                onClick={() => history.go(0)}
+              >
+                Continue
+              </Button>
+            </div>
+          ) : (
+            <Button
+              variant="contained"
+              color="primary"
+              disableElevation
+              onClick={sendConfirmationEmail}
+            >
+              Resend email
+            </Button>
+          )}
+          <Typography
+            component="p"
+            variant="caption"
+            align="center"
+            style={{ marginTop: "0.5rem", marginBottom: "0.5rem" }}
+            gutterBottom
+          >
+            or
+          </Typography>
+          <Button
+            variant="contained"
+            color="secondary"
+            disableElevation
+            onClick={signout}
+          >
+            Switch account
           </Button>
         </div>
       </Grid>

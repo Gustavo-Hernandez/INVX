@@ -1,6 +1,7 @@
 import React from "react";
 import createDataContext from "./createDataContext";
 import { auth } from "../api/firebase";
+import Typography from "@material-ui/core/Typography";
 
 const emailRegEx = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 const specialCharRegex = /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]+/;
@@ -13,17 +14,19 @@ const authReducer = (state, action) => {
       return { ...state, error: "" };
     case "confirm_email_sent":
       return { ...state, confirmationMessage: action.payload, error: "" };
+    case "set_local_email":
+      return { ...state, error: "", email: action.payload};
     default:
       return state;
   }
 };
 
-const signin = (dispatch) => async ({ email, password, history}) => {
+const signin = (dispatch) => async ({ email, password, history }) => {
   if (email && password) {
     try {
-      await auth.signInWithEmailAndPassword(email, password);
+      let {user} = await auth.signInWithEmailAndPassword(email, password);
       history.push("/dashboard");
-      dispatch({ type: "clear_error_message"});
+      dispatch({ type: "set_local_email", payload: user.email });
     } catch (error) {
       let errorMessage = "";
       switch (error.code) {
@@ -43,11 +46,19 @@ const signin = (dispatch) => async ({ email, password, history}) => {
           errorMessage = "There was an error while attempting to sign in.";
           break;
       }
-      const errorComponent = <div className="text-danger">{errorMessage}</div>;
+      const errorComponent = (
+        <Typography component="p" color="error" variant="body2">
+          {errorMessage}
+        </Typography>
+      );
       dispatch({ type: "set_error", payload: errorComponent });
     }
   } else {
-    const errorComponent = <div className="text-danger">Missing Values.</div>;
+    const errorComponent = (
+      <Typography component="p" color="error" variant="body2">
+        Missing Values.
+      </Typography>
+    );
     dispatch({ type: "set_error", payload: errorComponent });
   }
 };
@@ -91,9 +102,14 @@ const signup = (dispatch) => async ({
     }
 
     const errorComponent = tempError.split("\n").map((e, index) => (
-      <div key={index} className="text-danger">
+      <Typography
+        key={index}
+        component="p"
+        color="error"
+        variant="body2"
+      >
         {e}
-      </div>
+      </Typography>
     ));
 
     dispatch({ type: "set_error", payload: errorComponent });
@@ -110,26 +126,38 @@ const signup = (dispatch) => async ({
       switch (err.code) {
         case "auth/email-already-in-use":
           errorComponent = (
-            <div className="text-danger">This email already has an account</div>
+            <Typography component="p" color="error" variant="body2">
+              This email already has an account{" "}
+            </Typography>
           );
           break;
         case "auth/invalid-email":
-          errorComponent = <div className="text-danger">Invalid email</div>;
+          errorComponent = (
+            <Typography component="p" color="error" variant="body2">
+              Invalid email{" "}
+            </Typography>
+          );
           break;
         case "auth/operation-not-allowed":
           errorComponent = (
-            <div className="text-danger">
+            <Typography component="p" color="error" variant="body2">
               Email/password accounts are not enabled.
-            </div>
+            </Typography>
           );
           break;
         case "auth/weak-password":
           errorComponent = (
-            <div className="text-danger">Password is not strong</div>
+            <Typography component="p" color="error" variant="body2">
+              Password is not strong
+            </Typography>
           );
           break;
         default:
-          errorComponent = <div className="text-danger">An error ocurred.</div>;
+          errorComponent = (
+            <Typography component="p" color="error" variant="body2">
+              An error ocurred.{" "}
+            </Typography>
+          );
           break;
       }
 
@@ -162,5 +190,5 @@ const signout = (dispatch) => async () => {
 export const { Provider, Context } = createDataContext(
   authReducer,
   { signout, signup, signin, sendConfirmationEmail },
-  { error: "", confirmationMessage: "" }
+  { error: "", confirmationMessage: "", email:"" }
 );
