@@ -3,7 +3,6 @@ import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
-import Link from "@material-ui/core/Link";
 import Paper from "@material-ui/core/Paper";
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
@@ -11,6 +10,7 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Background from "../../assets/images/loginImage.jpg";
+import { Link } from "react-router-dom";
 import { Context as AuthContext } from "../../context/AuthContext";
 
 const Copyright = () => {
@@ -52,6 +52,11 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  link:{
+    textDecoration: "none",
+    color: theme.palette.primary.main,
+    fontWeight:"bolder"
+  }
 }));
 
 const Login = ({history}) => {
@@ -115,8 +120,8 @@ const Login = ({history}) => {
             </Button>
             <Grid container>
               <Grid item xs>
-                <Link href="/password-forgot" variant="body2">
-                  Forgot password?
+                <Link className={classes.link} to="/password-forgot">
+                    Forgot password?
                 </Link>
               </Grid>
             </Grid>
