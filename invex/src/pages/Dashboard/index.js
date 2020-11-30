@@ -11,12 +11,13 @@ import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import IconButton from "@material-ui/core/IconButton";
 import Container from "@material-ui/core/Container";
-import Grid from "@material-ui/core/Grid";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import DashboardContentNavigator from "../../navigation/DashboardContentNavigator";
 import { mainListItems } from "./listItems";
 import { Context as AuthContext } from "../../context/AuthContext";
+
 const Copyright = () => {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -170,7 +171,7 @@ const Dashboard = () => {
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
-          <Grid container spacing={3}></Grid>
+          <DashboardContentNavigator/>
           <Box pt={4}>
             <Copyright />
           </Box>
