@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Button, Divider, Grid, makeStyles } from "@material-ui/core";
 import Fade from "@material-ui/core/Fade";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
+import {Context as ItemsContext} from "../../context/ItemsContext";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -17,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Products = () => {
   const classes = useStyles();
-
+  const {state} = useContext(ItemsContext)
   return (
     <Fade in>
       <div className={classes.root}>
@@ -34,7 +35,7 @@ const Products = () => {
         </Grid>
         <Divider/>
         <div className={classes.products}>
-
+          {console.log(state.items)}
         </div>
       </div>
     </Fade>
