@@ -21,6 +21,10 @@ const setItems = (dispatch) =>(items) =>{
   dispatch({type:"set_items", payload: items})
 }
 
+const clearError = (dispatch) =>() =>{
+  dispatch({type:"set_error", payload: ""})
+}
+
 
 const createItem = (dispatch) => async({name, units, unitPrice, folder, description, file})=>{
   let error = "";
@@ -78,6 +82,6 @@ const createItem = (dispatch) => async({name, units, unitPrice, folder, descript
 
 export const { Provider, Context } = createDataContext(
   itemsReducer,
-  {setFolders, setItems, createItem},
+  {setFolders, setItems, createItem, clearError},
   {error: "", items:[], folders:[]}
 );
