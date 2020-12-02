@@ -52,7 +52,9 @@ const FirebaseListener = ({ children }) => {
       snap.docChanges().forEach((change) => {
         switch (change.type) {
           case "added":
-            updatedItems.push({ ...change.doc.data(), id: change.doc.id });
+            if (change.doc.data().visible) {
+              updatedItems.push({ ...change.doc.data(), id: change.doc.id });
+            }
             break;
           case "modified":
             updatedItems.forEach((item, i) => {
@@ -60,6 +62,9 @@ const FirebaseListener = ({ children }) => {
                 updatedItems[i] = change.doc.data();
                 updatedItems[i].id = change.doc.id;
               }
+            });
+            updatedItems = updatedItems.filter((item) => {
+              return item.visible !== false;
             });
             break;
           case "removed":

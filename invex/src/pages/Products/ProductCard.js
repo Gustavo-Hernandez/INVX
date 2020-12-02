@@ -8,7 +8,7 @@ import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
-import DeleteIcon from '@material-ui/icons/Delete';
+import DeleteIcon from "@material-ui/icons/Delete";
 
 const useStyles = makeStyles({
   root: {
@@ -25,18 +25,27 @@ const useStyles = makeStyles({
     objectFit: "contain",
     padding: 2,
   },
-  numbers:{
-    width:"100%",
-    display:"flex",
-    justifyContent: "space-between"
+  numbers: {
+    width: "100%",
+    display: "flex",
+    justifyContent: "space-between",
   },
-  buttonDelete:{
-    color:"#BA262B"
-  }
+  buttonDelete: {
+    color: "#BA262B",
+  },
 });
 
-const ProductCard = ({ name, units, unitPrice, description, url }) => {
+const ProductCard = ({
+  name,
+  units,
+  unitPrice,
+  description,
+  url,
+  id,
+  handleDelete,
+}) => {
   const classes = useStyles();
+
   return (
     <Card className={classes.root}>
       <CardActionArea>
@@ -68,9 +77,13 @@ const ProductCard = ({ name, units, unitPrice, description, url }) => {
         </CardContent>
       </CardActionArea>
       <CardActions>
-      <IconButton aria-label="delete" className={classes.buttonDelete}>
-        <DeleteIcon />
-      </IconButton>
+        <IconButton
+          aria-label="delete"
+          className={classes.buttonDelete}
+          onClick={() => handleDelete(id)}
+        >
+          <DeleteIcon />
+        </IconButton>
         <Button size="small" color="primary">
           Learn More
         </Button>

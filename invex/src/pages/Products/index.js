@@ -29,14 +29,10 @@ const useStyles = makeStyles((theme) => ({
 
 const Products = () => {
   const classes = useStyles();
-  const { state, createItem, clearError } = useContext(ItemsContext);
+  const { state, createItem, clearError, deleteItem } = useContext(ItemsContext);
   const [showForm, setShowForm] = useState(false);
   const [loading, setLoading] = useState(false);
   const [keyForm, setKey] = useState(1);
-
-  const products = state.items.map((product, index) => (
-    <ProductCard key={index} {...product} />
-  ));
 
   const handleSubmission = async ({
     name,
@@ -81,6 +77,10 @@ const Products = () => {
     }
     setShowForm((prev)=> !prev);
   }
+
+  const products = state.items.map((product, index) => (
+    <ProductCard key={index} handleDelete={deleteItem} {...product} />
+  ));
 
   const renderErrors = state.error.split("\n").map((e, index) => {
     if (e.trim().length > 0) {

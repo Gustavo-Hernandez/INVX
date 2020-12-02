@@ -14,18 +14,6 @@ const itemsReducer = (state, action) => {
   }
 };
 
-const setFolders = (dispatch) =>(folders) =>{
-  dispatch({type:"set_folders", payload: folders})
-}
-const setItems = (dispatch) =>(items) =>{
-  dispatch({type:"set_items", payload: items})
-}
-
-const clearError = (dispatch) =>() =>{
-  dispatch({type:"set_error", payload: ""})
-}
-
-
 const createItem = (dispatch) => async({name, units, unitPrice, folder, description, file})=>{
   let error = "";
   if (!name || name.length === 0) {
@@ -68,7 +56,8 @@ const createItem = (dispatch) => async({name, units, unitPrice, folder, descript
         unitPrice,
         folder,
         description,
-        url: url.toString()
+        url: url.toString(),
+        visible: true
       });
 
     } catch (err) {
@@ -80,8 +69,23 @@ const createItem = (dispatch) => async({name, units, unitPrice, folder, descript
   
 }
 
+const deleteItem = (dispatch)=> (id) =>{
+  firestore.collection("items").doc(id).update({visible: false})
+}
+
+const setFolders = (dispatch) =>(folders) =>{
+  dispatch({type:"set_folders", payload: folders})
+}
+const setItems = (dispatch) =>(items) =>{
+  dispatch({type:"set_items", payload: items})
+}
+
+const clearError = (dispatch) =>() =>{
+  dispatch({type:"set_error", payload: ""})
+}
+
 export const { Provider, Context } = createDataContext(
   itemsReducer,
-  {setFolders, setItems, createItem, clearError},
+  {setFolders, setItems, createItem, clearError, deleteItem},
   {error: "", items:[], folders:[]}
 );
