@@ -1,5 +1,5 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core";
+import { Chip, makeStyles } from "@material-ui/core";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardActions from "@material-ui/core/CardActions";
@@ -10,7 +10,7 @@ import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import DeleteIcon from "@material-ui/icons/Delete";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme)=>({
   root: {
     maxWidth: 345,
     minWidth: 180,
@@ -30,10 +30,13 @@ const useStyles = makeStyles({
     display: "flex",
     justifyContent: "space-between",
   },
+  chip:{
+    marginBottom:2
+  },
   buttonDelete: {
     color: "#BA262B",
   },
-});
+}));
 
 const ProductCard = ({
   name,
@@ -43,6 +46,7 @@ const ProductCard = ({
   url,
   id,
   handleDelete,
+  folder
 }) => {
   const classes = useStyles();
 
@@ -59,6 +63,9 @@ const ProductCard = ({
           <Typography gutterBottom variant="h5" component="h2">
             {name}
           </Typography>
+          <div className={classes.chip}>
+            {`Folder: ${folder}`}
+          </div>
           <div className={classes.numbers}>
             <span>
               <Typography variant="subtitle1" component="p">
@@ -74,6 +81,7 @@ const ProductCard = ({
           <Typography variant="body2" color="textSecondary" component="p">
             {description || "No description provided."}
           </Typography>
+
         </CardContent>
       </CardActionArea>
       <CardActions>
