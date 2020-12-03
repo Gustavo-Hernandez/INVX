@@ -15,6 +15,8 @@ import ExposureIcon from "@material-ui/icons/Exposure";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import DeleteIcon from "@material-ui/icons/Delete";
+import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -71,7 +73,7 @@ const ProductCard = ({
   const [anchorEl, setAnchorEl] = useState(null);
   const [newUnits, setNewUnits] = useState(units);
 
-  const handleClick = (event) => {
+  const handleUnitClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -169,12 +171,20 @@ const ProductCard = ({
           <DeleteIcon />
         </IconButton>
         <IconButton
-          onClick={handleClick}
+          onClick={handleUnitClick}
           color="primary"
           aria-label="set units"
         >
           <ExposureIcon />
         </IconButton>
+        <Link to={`/products/${id}`}>
+        <IconButton
+          color="primary"
+          aria-label="set units"
+        >
+          <MoreHorizIcon />
+        </IconButton>
+        </Link>
       </CardActions>
     </Card>
   );
