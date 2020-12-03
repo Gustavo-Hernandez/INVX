@@ -1,16 +1,22 @@
-import React from "react";
-import { Chip, makeStyles } from "@material-ui/core";
+import React, { useState } from "react";
+import {
+  Popover,
+  makeStyles,
+  Paper,
+  InputBase,
+  Button,
+} from "@material-ui/core";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
-import Button from "@material-ui/core/Button";
+import ExposureIcon from "@material-ui/icons/Exposure";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import DeleteIcon from "@material-ui/icons/Delete";
 
-const useStyles = makeStyles((theme)=>({
+const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: 345,
     minWidth: 180,
@@ -30,11 +36,23 @@ const useStyles = makeStyles((theme)=>({
     display: "flex",
     justifyContent: "space-between",
   },
-  chip:{
-    marginBottom:2
+  chip: {
+    marginBottom: 2,
   },
   buttonDelete: {
     color: "#BA262B",
+  },
+  inputContainer: {
+    height: "100%",
+    padding: "2x 4px",
+    display: "flex",
+    alignItems: "center",
+    borderTop: "3px solid lightblue",
+  },
+  input: {
+    marginLeft: theme.spacing(1),
+    width: 100,
+    flex: 1,
   },
 }));
 
@@ -46,12 +64,73 @@ const ProductCard = ({
   url,
   id,
   handleDelete,
-  folder
+  handleUpdateUnits,
+  folder,
 }) => {
   const classes = useStyles();
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [newUnits, setNewUnits] = useState(units);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleUnitChange = (e) => {
+    let nUnits = parseFloat(e.target.value);
+    if (nUnits >= 0) {
+      setNewUnits(nUnits);
+    }
+  };
+
+  const handleSubmit = () =>{
+    if (newUnits !== units) {
+      handleUpdateUnits(id, newUnits);
+    }
+    handleClose();
+  }
+
+  const open = Boolean(anchorEl);
+  const ids = open ? "simple-popover" : undefined;
 
   return (
     <Card className={classes.root}>
+      <Popover
+        id={ids}
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "center",
+        }}
+        transformOrigin={{
+          vertical: "bottom",
+          horizontal: "center",
+        }}
+      >
+        <Paper component="form" className={classes.inputContainer}>
+          <InputBase
+            className={classes.input}
+            placeholder="Set Units"
+            autoCorrect="none"
+            type="number"
+            onChange={handleUnitChange}
+            value={newUnits}
+          />
+          <Button
+            variant="contained"
+            color="primary"
+            style={{ marginLeft: "10px" }}
+            onClick={handleSubmit}
+          >
+            Update
+          </Button>
+        </Paper>
+      </Popover>
       <CardActionArea>
         <CardMedia
           className={classes.media}
@@ -63,9 +142,7 @@ const ProductCard = ({
           <Typography gutterBottom variant="h5" component="h2">
             {name}
           </Typography>
-          <div className={classes.chip}>
-            {`Folder: ${folder}`}
-          </div>
+          <div className={classes.chip}>{`Folder: ${folder}`}</div>
           <div className={classes.numbers}>
             <span>
               <Typography variant="subtitle1" component="p">
@@ -81,7 +158,6 @@ const ProductCard = ({
           <Typography variant="body2" color="textSecondary" component="p">
             {description || "No description provided."}
           </Typography>
-
         </CardContent>
       </CardActionArea>
       <CardActions>
@@ -92,9 +168,13 @@ const ProductCard = ({
         >
           <DeleteIcon />
         </IconButton>
-        <Button size="small" color="primary">
-          Learn More
-        </Button>
+        <IconButton
+          onClick={handleClick}
+          color="primary"
+          aria-label="set units"
+        >
+          <ExposureIcon />
+        </IconButton>
       </CardActions>
     </Card>
   );

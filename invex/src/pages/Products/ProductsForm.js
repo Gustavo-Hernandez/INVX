@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
     width: 150,
     height: 180,
     objectFit: "contain",
-  },
+  }
 }));
 
 const ProductsForm = ({

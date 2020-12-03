@@ -73,6 +73,10 @@ const deleteItem = (dispatch)=> (id) =>{
   firestore.collection("items").doc(id).update({visible: false})
 }
 
+const updateUnits = (dispatch)=> (id, n) =>{
+  firestore.collection("items").doc(id).update({units: n})
+}
+
 const setFolders = (dispatch) =>(folders) =>{
   dispatch({type:"set_folders", payload: folders})
 }
@@ -86,6 +90,6 @@ const clearError = (dispatch) =>() =>{
 
 export const { Provider, Context } = createDataContext(
   itemsReducer,
-  {setFolders, setItems, createItem, clearError, deleteItem},
+  {setFolders, setItems, createItem, clearError, deleteItem, updateUnits},
   {error: "", items:[], folders:[]}
 );

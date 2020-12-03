@@ -62,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Products = () => {
   const classes = useStyles();
-  const { state, createItem, clearError, deleteItem } = useContext(
+  const { state, createItem, clearError, deleteItem, updateUnits } = useContext(
     ItemsContext
   );
   const [showForm, setShowForm] = useState(false);
@@ -139,7 +139,7 @@ const Products = () => {
       }
     }
     let filteredComponent = filtered.map((product, index) => (
-      <ProductCard key={index} handleDelete={deleteItem} {...product} />
+      <ProductCard key={index} handleUpdateUnits={updateUnits} handleDelete={deleteItem} {...product} />
     ));
     setFilteredProducts(filteredComponent);
     setSearchFilter(e.target.value);
@@ -169,7 +169,7 @@ const Products = () => {
       }  
     }
     let filteredComponent = filtered.map((product, index) => (
-      <ProductCard key={index} handleDelete={deleteItem} {...product} />
+      <ProductCard key={index} handleUpdateUnits={updateUnits} handleDelete={deleteItem} {...product} />
     ));
     setFilteredProducts(filteredComponent);
     setFolderFilter(e.target.value);
@@ -182,7 +182,7 @@ const Products = () => {
   ));
 
   const products = state.items.map((product, index) => (
-    <ProductCard key={index} handleDelete={deleteItem} {...product} />
+    <ProductCard key={index} handleUpdateUnits={updateUnits} handleDelete={deleteItem} {...product} />
   ));
 
   const renderErrors = state.error.split("\n").map((e, index) => {
