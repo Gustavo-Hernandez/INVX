@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import OutlinedInput from "@material-ui/core/OutlinedInput";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -40,6 +40,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ProductsForm = ({
+  product,
   folders,
   onSubmit,
   loading,
@@ -55,11 +56,25 @@ const ProductsForm = ({
   const [description, setDescription] = useState("");
   const [file, setFile] = useState(undefined);
   const [image, setImage] = useState(undefined);
+  const [editedFile, setEditedFile] = useState(false);
+  
 
   const handleFileSelection = (selectedFile) => {
     setFile(selectedFile);
     setImage(URL.createObjectURL(selectedFile));
+    setEditedFile(true);
   };
+
+  useEffect(()=>{
+    if (product) {
+      setName(product.name);
+      setUnits(product.units);
+      setUnitPrice(product.unitPrice);
+      setFolder(product.folder);
+      setDescription(product.description);
+      setImage(product.url);
+    }
+  },[product]);
 
   const folderOptions = folders.map((f, index) => (
     <MenuItem key={index} value={f.id}>
@@ -138,9 +153,6 @@ const ProductsForm = ({
                   onChange={(e) => setFolder(e.target.value)}
                   value={folder}
                 >
-                  <MenuItem value="">
-                    <em>None</em>
-                  </MenuItem>
                   {folderOptions}
                 </Select>
               </FormControl>
@@ -208,6 +220,7 @@ const ProductsForm = ({
                     folder,
                     description,
                     file,
+                    editedFile
                   })
                 }
               >

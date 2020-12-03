@@ -20,8 +20,8 @@ import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    maxWidth: 345,
-    minWidth: 180,
+    width: 200,
+    height: 350,
     marginTop: 12,
     marginLeft: 5,
     marginRight: 5,
@@ -37,6 +37,13 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     display: "flex",
     justifyContent: "space-between",
+  },
+  description:{
+    width:"100%",
+    display:"flex",
+    flexWrap:"wrap",
+    overflow:"hidden",
+    height: 40,
   },
   chip: {
     marginBottom: 2,
@@ -133,14 +140,14 @@ const ProductCard = ({
           </Button>
         </Paper>
       </Popover>
-      <CardActionArea>
+      <CardActionArea style={{width:"100%"}}>
         <CardMedia
           className={classes.media}
           image={url}
           alt={name}
           title="Contemplative Reptile"
         />
-        <CardContent>
+        <CardContent style={{width:"100%", paddingBottom:0, marginBottom:0}}>
           <Typography gutterBottom variant="h5" component="h2">
             {name}
           </Typography>
@@ -157,9 +164,11 @@ const ProductCard = ({
               </Typography>
             </span>
           </div>
+          <div className={classes.description}>
           <Typography variant="body2" color="textSecondary" component="p">
             {description || "No description provided."}
           </Typography>
+          </div>
         </CardContent>
       </CardActionArea>
       <CardActions>
