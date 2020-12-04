@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import QRCode from "react-qr-code";
-import { Grid, Typography, Button, makeStyles, Fade } from "@material-ui/core";
+import { Grid, Button, makeStyles, Fade } from "@material-ui/core";
 import jsPDF from "jspdf";
 import * as htmlToImage from "html-to-image";
 
