@@ -7,13 +7,14 @@ import {
   Fab,
   Button,
   Fade,
-  makeStyles,
+  makeStyles
 } from "@material-ui/core";
 import EditIcon from "@material-ui/icons/Edit";
 import ProductsForm from "../Products/ProductsForm";
 import { useParams } from "react-router-dom";
 import { Context as ItemsContext } from "../../context/ItemsContext";
 import { store } from "react-notifications-component";
+import Label from "./Label";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -39,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
     height: "100%",
     borderRadius: 5,
     border: "1px solid lightgray",
-  },
+  }
 }));
 
 const Product = ({ history }) => {
@@ -48,6 +49,7 @@ const Product = ({ history }) => {
 
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [showLabel, setShowLabel] = useState(false);
   const [keyForm, setKey] = useState(1);
   const [product, setProduct] = useState({
     name: "Product",
@@ -59,7 +61,7 @@ const Product = ({ history }) => {
 
   const {
     state: { items, folders, error },
-    updateItem
+    updateItem,
   } = useContext(ItemsContext);
 
   useEffect(() => {
@@ -78,10 +80,19 @@ const Product = ({ history }) => {
     folder,
     description,
     file,
-    editedFile
+    editedFile,
   }) => {
     setLoading(true);
-    const response = await updateItem({id, name, units, unitPrice, folder, description, file, editedFile});
+    const response = await updateItem({
+      id,
+      name,
+      units,
+      unitPrice,
+      folder,
+      description,
+      file,
+      editedFile,
+    });
     if (response) {
       setKey(keyForm + 1);
       store.addNotification({
@@ -97,7 +108,7 @@ const Product = ({ history }) => {
           onScreen: true,
         },
       });
-      
+
       setIsEditing(false);
     }
     setLoading(false);
@@ -170,15 +181,23 @@ const Product = ({ history }) => {
             <Grid item xs={12} md={5} className={classes.imageContainer}>
               <img alt="product" className={classes.image} src={product.url} />
             </Grid>
-            <Grid item xs={12}></Grid>
+            {showLabel && <Label {...product}/>}
           </Grid>
         )}
         <Button
-          variant="contained"
+          variant="outlined"
           color="secondary"
           onClick={() => history.goBack()}
         >
           Go Back
+        </Button>
+        <Button
+          variant="contained"
+          color="secondary"
+          style={{ marginLeft: 20 }}
+          onClick={() => setShowLabel((prev)=> !prev)}
+        >
+         {showLabel ? "Hide Label" : "Show Label"}
         </Button>
       </Paper>
     </Fade>
