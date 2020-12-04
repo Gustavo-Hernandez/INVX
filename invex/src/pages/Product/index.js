@@ -76,6 +76,7 @@ const Product = ({ history }) => {
   const handleSubmission = async ({
     name,
     units,
+    minStock,
     unitPrice,
     folder,
     description,
@@ -87,6 +88,7 @@ const Product = ({ history }) => {
       id,
       name,
       units,
+      minStock,
       unitPrice,
       folder,
       description,

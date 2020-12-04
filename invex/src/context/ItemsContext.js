@@ -14,7 +14,7 @@ const itemsReducer = (state, action) => {
   }
 };
 
-const createItem = (dispatch) => async({name, units, unitPrice, folder, description, file})=>{
+const createItem = (dispatch) => async({name, units, minStock, unitPrice, folder, description, file})=>{
   let error = "";
   if (!name || name.length === 0) {
     error += "Invalid name.\n";
@@ -25,7 +25,10 @@ const createItem = (dispatch) => async({name, units, unitPrice, folder, descript
   if (!unitPrice || unitPrice <= 0) {
     error += "Unit price must be greater than zero.\n"
   }
-  if (!folder || folder.length === 0) { //TODO: ADD FOLDER VALIDATION
+  if (!minStock || minStock <= 0) {
+    error += "Low Stock treshold must be postitive.\n"
+  }
+  if (!folder || folder.length === 0) {
     error += "Folder does not exist.\n"
   }
   if (!description || description.length === 0) {
@@ -53,6 +56,7 @@ const createItem = (dispatch) => async({name, units, unitPrice, folder, descript
       firestore.collection("items").doc().set({
         name,
         units,
+        minStock,
         unitPrice,
         folder,
         description,
@@ -69,7 +73,7 @@ const createItem = (dispatch) => async({name, units, unitPrice, folder, descript
   
 }
 
-const updateItem = (dispatch) => async({id, name, units, unitPrice, folder, description, file, editedFile}) =>{
+const updateItem = (dispatch) => async({id, name, units, minStock, unitPrice, folder, description, file, editedFile}) =>{
   let error = ""
   if (!name || name.length === 0) {
     error += "Invalid name.\n";
@@ -110,6 +114,7 @@ const updateItem = (dispatch) => async({id, name, units, unitPrice, folder, desc
         firestore.collection("items").doc(id).update({
           name,
           units,
+          minStock,
           unitPrice,
           folder,
           description,
@@ -120,6 +125,7 @@ const updateItem = (dispatch) => async({id, name, units, unitPrice, folder, desc
       firestore.collection("items").doc(id).update({
         name,
         units,
+        minStock,
         unitPrice,
         folder,
         description

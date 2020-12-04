@@ -76,6 +76,7 @@ const Products = () => {
   const handleSubmission = async ({
     name,
     units,
+    minStock,
     unitPrice,
     folder,
     description,
@@ -85,6 +86,7 @@ const Products = () => {
     const response = await createItem({
       name,
       units,
+      minStock,
       unitPrice,
       folder,
       description,

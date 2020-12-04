@@ -51,6 +51,7 @@ const ProductsForm = ({
   const classes = useStyles();
   const [name, setName] = useState("");
   const [units, setUnits] = useState("");
+  const [minStock, setMinStock] = useState("");
   const [unitPrice, setUnitPrice] = useState("");
   const [folder, setFolder] = useState("");
   const [description, setDescription] = useState("");
@@ -69,6 +70,7 @@ const ProductsForm = ({
     if (product) {
       setName(product.name);
       setUnits(product.units);
+      setMinStock(product.minStock);
       setUnitPrice(product.unitPrice);
       setFolder(product.folder);
       setDescription(product.description);
@@ -126,7 +128,7 @@ const ProductsForm = ({
                 />
               </FormControl>
             </Grid>
-            <Grid item xs={6} md={2} className={classes.margin}>
+            <Grid item xs={6} md={3} className={classes.margin}>
               <FormControl size="medium" fullWidth variant="outlined" required>
                 <InputLabel htmlFor="outlined-adornment-units">
                   Units
@@ -144,7 +146,25 @@ const ProductsForm = ({
               </FormControl>
             </Grid>
             <Grid item xs={12} md={3} className={classes.margin}>
-              <FormControl fullWidth variant="outlined" required>
+            <FormControl size="medium" fullWidth variant="outlined" required>
+                <InputLabel htmlFor="outlined-adornment-units">
+                  Low Stock Treshold
+                </InputLabel>
+                <OutlinedInput
+                  onChange={(e) => setMinStock(e.currentTarget.value)}
+                  value={minStock}
+                  id="outlined-adornment-units"
+                  type="number"
+                  startAdornment={
+                    <InputAdornment position="start">#</InputAdornment>
+                  }
+                  labelWidth={150}
+                />
+              </FormControl>
+              
+            </Grid>
+            <Grid item xs={12} md={4} className={classes.margin}>
+            <FormControl fullWidth variant="outlined" required>
                 <InputLabel id="folder">Folder</InputLabel>
                 <Select
                   labelId="folder"
@@ -157,7 +177,7 @@ const ProductsForm = ({
                 </Select>
               </FormControl>
             </Grid>
-            <Grid item xs={12} md={8} className={classes.margin}>
+            <Grid item xs={12} md={9} className={classes.margin}>
               <FormControl fullWidth size="medium" variant="outlined" required>
                 <InputLabel htmlFor="outlined-adornment-description">
                   Description
@@ -216,6 +236,7 @@ const ProductsForm = ({
                   onSubmit({
                     name,
                     units,
+                    minStock,
                     unitPrice,
                     folder,
                     description,

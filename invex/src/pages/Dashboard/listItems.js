@@ -4,7 +4,7 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import DashboardIcon from "@material-ui/icons/Dashboard";
 import LocalOfferIcon from "@material-ui/icons/LocalOffer";
-import PeopleIcon from "@material-ui/icons/People";
+import WarningIcon from '@material-ui/icons/Warning';
 import { Link } from "react-router-dom";
 
 export const mainListItems = (
@@ -25,12 +25,12 @@ export const mainListItems = (
         <ListItemText primary="Products" />
       </ListItem>
     </Link>
-    <Link style={{textDecoration:"none", color:"black"}} to="/users">
+    <Link style={{textDecoration:"none", color:"black"}} to="/lowstock">
       <ListItem button>
         <ListItemIcon>
-          <PeopleIcon />
+          <WarningIcon />
         </ListItemIcon>
-        <ListItemText primary="Users" />
+        <ListItemText primary="Low Stock" />
       </ListItem>
     </Link>
   </div>
