@@ -5,14 +5,17 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { Provider as AuthProvider } from "./context/AuthContext";
 import { Provider as ItemsProvider } from "./context/ItemsContext";
+import { Provider as LogsProvider } from "./context/LogsContext";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 
 ReactDOM.render(
     <AuthProvider>
       <ItemsProvider>
-        <ReactNotification/>
-        <App />
+        <LogsProvider>
+          <ReactNotification/>
+          <App />
+        </LogsProvider>
       </ItemsProvider>
     </AuthProvider>,
   document.getElementById("root")

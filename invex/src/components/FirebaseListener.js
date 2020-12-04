@@ -1,6 +1,8 @@
 import React, { useEffect, useContext } from "react";
 import { firestore } from "../api/firebase";
 import { Context as ItemsContext } from "../context/ItemsContext";
+import { Context as LogsContext } from "../context/LogsContext";
+
 
 const FirebaseListener = ({ children }) => {
   const {
@@ -8,6 +10,11 @@ const FirebaseListener = ({ children }) => {
     setFolders,
     setItems,
   } = useContext(ItemsContext);
+
+  const {
+    state: { logs},
+    setLogs,
+  } = useContext(LogsContext);
 
   //Folder Subscriber
   useEffect(() => {
@@ -80,6 +87,46 @@ const FirebaseListener = ({ children }) => {
     });
     return () => {
       itemsSubscriber();
+    };
+    // eslint-disable-next-line
+  }, []);
+
+  //Logs Subscriber
+  useEffect(() => {
+    const logsSubscriber = firestore.collection("logs").onSnapshot((snap) => {
+      let updatedLogs = logs;
+      snap.docChanges().forEach((change) => {
+        switch (change.type) {
+          case "added":
+            let data = change.doc.data();
+            let tempDate = data.date.toDate();
+            data.date = `${tempDate.toDateString()} ${tempDate.toLocaleTimeString()}`
+            updatedLogs.push({ ...data, id: change.doc.id});
+            break;
+          case "modified":
+            updatedLogs.forEach((item, i) => {
+              if (item.id === change.doc.id) {
+                let data = change.doc.data();
+                let tempDate = data.date.toDate();
+                data.date = `${tempDate.toDateString()} ${tempDate.toLocaleTimeString()}`
+                updatedLogs[i] = data;
+                updatedLogs[i].id = change.doc.id;
+              }
+            });
+            break;
+          case "removed":
+            updatedLogs = updatedLogs.filter((item) => {
+              return item.id !== change.doc.id;
+            });
+            break;
+          default:
+            break;
+        }
+      });
+      setLogs(updatedLogs);
+    });
+    return () => {
+      logsSubscriber();
     };
     // eslint-disable-next-line
   }, []);

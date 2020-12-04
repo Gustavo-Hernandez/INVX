@@ -5,6 +5,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import DashboardIcon from "@material-ui/icons/Dashboard";
 import LocalOfferIcon from "@material-ui/icons/LocalOffer";
 import WarningIcon from '@material-ui/icons/Warning';
+import TocIcon from '@material-ui/icons/Toc';
 import { Link } from "react-router-dom";
 
 export const mainListItems = (
@@ -31,6 +32,14 @@ export const mainListItems = (
           <WarningIcon />
         </ListItemIcon>
         <ListItemText primary="Low Stock" />
+      </ListItem>
+    </Link>
+    <Link style={{textDecoration:"none", color:"black"}} to="/logs">
+      <ListItem button>
+        <ListItemIcon>
+          <TocIcon />
+        </ListItemIcon>
+        <ListItemText primary="Logs" />
       </ListItem>
     </Link>
   </div>
