@@ -143,6 +143,12 @@ const updateItem = (dispatch) => async({id, name, units, minStock, unitPrice, fo
  
 }
 
+const createFolder = (dispatch)=> (name) =>{
+  console.log("Here");
+  firestore.collection("folders").doc(name).set({visible: true})
+}
+
+
 const deleteItem = (dispatch)=> (id) =>{
   firestore.collection("items").doc(id).update({visible: false})
   createLog(id, "DELETE");
@@ -178,6 +184,6 @@ const createLog= (id, code)=>{
 
 export const { Provider, Context } = createDataContext(
   itemsReducer,
-  {setFolders, setItems, createItem, clearError, deleteItem, updateUnits, updateItem},
+  {setFolders, setItems, createItem, clearError, deleteItem, updateUnits, updateItem, createFolder},
   {error: "", items:[], folders:[]}
 );

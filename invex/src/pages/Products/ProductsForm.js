@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
     width: 150,
     height: 180,
     objectFit: "contain",
-  }
+  },
 }));
 
 const ProductsForm = ({
@@ -58,7 +58,6 @@ const ProductsForm = ({
   const [file, setFile] = useState(undefined);
   const [image, setImage] = useState(undefined);
   const [editedFile, setEditedFile] = useState(false);
-  
 
   const handleFileSelection = (selectedFile) => {
     setFile(selectedFile);
@@ -66,7 +65,7 @@ const ProductsForm = ({
     setEditedFile(true);
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     if (product) {
       setName(product.name);
       setUnits(product.units);
@@ -76,7 +75,7 @@ const ProductsForm = ({
       setDescription(product.description);
       setImage(product.url);
     }
-  },[product]);
+  }, [product]);
 
   const folderOptions = folders.map((f, index) => (
     <MenuItem key={index} value={f.id}>
@@ -146,7 +145,7 @@ const ProductsForm = ({
               </FormControl>
             </Grid>
             <Grid item xs={12} md={3} className={classes.margin}>
-            <FormControl size="medium" fullWidth variant="outlined" required>
+              <FormControl size="medium" fullWidth variant="outlined" required>
                 <InputLabel htmlFor="outlined-adornment-units">
                   Low Stock Treshold
                 </InputLabel>
@@ -161,10 +160,9 @@ const ProductsForm = ({
                   labelWidth={150}
                 />
               </FormControl>
-              
             </Grid>
             <Grid item xs={12} md={4} className={classes.margin}>
-            <FormControl fullWidth variant="outlined" required>
+              <FormControl fullWidth variant="outlined" required>
                 <InputLabel id="folder">Folder</InputLabel>
                 <Select
                   labelId="folder"
@@ -241,7 +239,7 @@ const ProductsForm = ({
                     folder,
                     description,
                     file,
-                    editedFile
+                    editedFile,
                   })
                 }
               >

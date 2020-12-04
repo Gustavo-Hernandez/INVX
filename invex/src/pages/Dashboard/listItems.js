@@ -6,6 +6,7 @@ import DashboardIcon from "@material-ui/icons/Dashboard";
 import LocalOfferIcon from "@material-ui/icons/LocalOffer";
 import WarningIcon from '@material-ui/icons/Warning';
 import TocIcon from '@material-ui/icons/Toc';
+import FolderIcon from '@material-ui/icons/Folder';
 import { Link } from "react-router-dom";
 
 export const mainListItems = (
@@ -24,6 +25,14 @@ export const mainListItems = (
           <LocalOfferIcon />
         </ListItemIcon>
         <ListItemText primary="Products" />
+      </ListItem>
+    </Link>
+    <Link style={{textDecoration:"none", color:"black"}} to="/folders">
+      <ListItem button>
+        <ListItemIcon>
+          <FolderIcon />
+        </ListItemIcon>
+        <ListItemText primary="Folders" />
       </ListItem>
     </Link>
     <Link style={{textDecoration:"none", color:"black"}} to="/lowstock">
