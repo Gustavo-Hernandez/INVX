@@ -5,8 +5,6 @@ import ListItemText from "@material-ui/core/ListItemText";
 import DashboardIcon from "@material-ui/icons/Dashboard";
 import LocalOfferIcon from "@material-ui/icons/LocalOffer";
 import PeopleIcon from "@material-ui/icons/People";
-import BarChartIcon from "@material-ui/icons/BarChart";
-import LayersIcon from "@material-ui/icons/Layers";
 import { Link } from "react-router-dom";
 
 export const mainListItems = (
@@ -27,28 +25,12 @@ export const mainListItems = (
         <ListItemText primary="Products" />
       </ListItem>
     </Link>
-    <Link style={{textDecoration:"none", color:"black"}}>
+    <Link style={{textDecoration:"none", color:"black"}} to="/users">
       <ListItem button>
         <ListItemIcon>
           <PeopleIcon />
         </ListItemIcon>
-        <ListItemText primary="Customers" />
-      </ListItem>
-    </Link>
-    <Link style={{textDecoration:"none", color:"black"}}>
-      <ListItem button>
-        <ListItemIcon>
-          <BarChartIcon />
-        </ListItemIcon>
-        <ListItemText primary="Reports" />
-      </ListItem>
-    </Link>
-    <Link style={{textDecoration:"none", color:"black"}}>
-      <ListItem button>
-        <ListItemIcon>
-          <LayersIcon />
-        </ListItemIcon>
-        <ListItemText primary="Integrations" />
+        <ListItemText primary="Users" />
       </ListItem>
     </Link>
   </div>
