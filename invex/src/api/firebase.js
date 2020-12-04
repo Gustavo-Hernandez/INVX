@@ -22,11 +22,11 @@ class Firebase {
     this.firestore = app.firestore();
     this.auth = app.auth();
     this.storage = app.storage();
-
+    this.admin = app;
     Firebase.instance = this;
     return this;
   }
   
 }
 
-export const {firestore, auth, storage} = new Firebase();
+export const {firestore, auth, storage, admin} = new Firebase();

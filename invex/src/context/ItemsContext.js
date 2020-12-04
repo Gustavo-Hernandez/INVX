@@ -1,5 +1,6 @@
 import createDataContext from "./createDataContext";
 import { storage, firestore } from "../api/firebase";
+import { auth, admin } from "../api/firebase";
 
 const itemsReducer = (state, action) => {
   switch (action.type) {
@@ -53,7 +54,7 @@ const createItem = (dispatch) => async({name, units, minStock, unitPrice, folder
       const response = await itemImagesRef.put(file);
       const url = await response.ref.getDownloadURL();
             
-      firestore.collection("items").doc().set({
+      const res = await firestore.collection("items").add({
         name,
         units,
         minStock,
@@ -63,6 +64,7 @@ const createItem = (dispatch) => async({name, units, minStock, unitPrice, folder
         url: url.toString(),
         visible: true
       });
+      createLog(res.id, "ADD");
 
     } catch (err) {
       dispatch({type:"set_error", payload:err});
@@ -120,17 +122,18 @@ const updateItem = (dispatch) => async({id, name, units, minStock, unitPrice, fo
           description,
           url: url.toString(),
         });
+        createLog(id, "UPDATE");
+      }else{
+        firestore.collection("items").doc(id).update({
+          name,
+          units,
+          minStock,
+          unitPrice,
+          folder,
+          description
+        });
+        createLog(id, "UPDATE");
       }
-      
-      firestore.collection("items").doc(id).update({
-        name,
-        units,
-        minStock,
-        unitPrice,
-        folder,
-        description
-      });
-
     } catch (err) {
       dispatch({type:"set_error", payload:err});
     }
@@ -142,10 +145,12 @@ const updateItem = (dispatch) => async({id, name, units, minStock, unitPrice, fo
 
 const deleteItem = (dispatch)=> (id) =>{
   firestore.collection("items").doc(id).update({visible: false})
+  createLog(id, "DELETE");
 }
 
 const updateUnits = (dispatch)=> (id, n) =>{
-  firestore.collection("items").doc(id).update({units: n})
+  firestore.collection("items").doc(id).update({units: n});
+  createLog(id, "UPDATE");
 }
 
 const setFolders = (dispatch) =>(folders) =>{
@@ -157,6 +162,18 @@ const setItems = (dispatch) =>(items) =>{
 
 const clearError = (dispatch) =>() =>{
   dispatch({type:"set_error", payload: ""})
+}
+
+const createLog= (id, code)=>{
+  let currentUser = auth.currentUser;
+  if (currentUser) {
+    firestore.collection("logs").doc().set({
+      date: admin.firestore.Timestamp.fromDate(new Date()),
+      user: currentUser.uid,
+      code,
+      id
+    })
+  }
 }
 
 export const { Provider, Context } = createDataContext(

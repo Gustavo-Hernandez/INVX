@@ -1,6 +1,6 @@
 import React from "react";
 import createDataContext from "./createDataContext";
-import { auth } from "../api/firebase";
+import { auth, admin, firestore } from "../api/firebase";
 import Typography from "@material-ui/core/Typography";
 
 const emailRegEx = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -27,6 +27,7 @@ const signin = (dispatch) => async ({ email, password, history }) => {
       let { user } = await auth.signInWithEmailAndPassword(email, password);
       history.push("/dashboard");
       dispatch({ type: "set_local_email", payload: user.email });
+      await createLog(user.uid, "IN");
     } catch (error) {
       let errorMessage = "";
       switch (error.code) {
@@ -223,8 +224,21 @@ const sendRecoveryEmail = (dispatch) => async ({ email }) => {
 };
 
 const signout = (dispatch) => async () => {
+  await createLog("NULL", "OUT");
   auth.signOut();
 };
+
+const createLog= async (id, code)=>{
+  let currentUser = auth.currentUser;
+  if (currentUser) {
+    await firestore.collection("logs").doc().set({
+      date: admin.firestore.Timestamp.fromDate(new Date()),
+      user: currentUser.uid,
+      code,
+      id
+    })
+  }
+}
 
 export const { Provider, Context } = createDataContext(
   authReducer,
