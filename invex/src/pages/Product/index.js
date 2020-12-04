@@ -167,6 +167,11 @@ const Product = ({ history }) => {
                   Price: ${product.unitPrice}
                 </Typography>
               </Grid>
+              <Grid item xs={12} className={classes.row}>
+                <Typography variant="button" component="div">
+                  Low Stock Treshold: {product.minStock}
+                </Typography>
+              </Grid>
               <Grid item xs={12}>
                 <Typography variant="button" component="p">
                   Description:
