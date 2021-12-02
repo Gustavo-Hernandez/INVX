@@ -1,4 +1,4 @@
-# INVEX
+# INVX
 
 This project is part of the web development class, it consists of an early version of an inventory system.
 # Demo
