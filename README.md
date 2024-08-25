@@ -1,8 +1,7 @@
 # INVX
 
 This project is part of the web development class, it consists of an early version of an inventory system.
-# Demo
-- Available at https://codx-invex.web.app/
+
 # Setup
 Follow the next steps
  - Create a Firebase Project
